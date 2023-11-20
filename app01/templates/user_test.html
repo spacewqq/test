@@ -1,0 +1,556 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>推荐试卷答题</title>
+      <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/test.css' %}">
+    <link href="{% static 'css/iconfont.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/test.css' %}" rel="stylesheet" type="text/css" />
+
+    <style>
+        .hasBeenAnswer {
+            background: #5d9cec;
+            color: #fff;
+        }
+
+        .reading h2 {
+            width: 100%;
+            margin: 20px 0 70px;
+            text-align: center;
+            line-height: 2;
+            font-size: 20px;
+            color: #59595b;
+        }
+
+            .reading h2 a {
+                text-decoration: none;
+                color: #59595b;
+                font-size: 20px;
+            }
+
+                .reading h2 a:hover {
+                    color: #2183f1;
+                }
+    </style>
+</head>
+
+<body onload="load()">
+
+  <header>
+   <nav class="navbar navbar-expand-lg" style="background-color: grey " >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="color: chartreuse;text-align: center" >
+            <img src="{% static 'img/logo4.png' %}" alt="Logo" width="38" height="32"
+                       class="d-inline-block align-text-top" >
+            深度练习
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/index2" style="color: #b6d4fe">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/total/problems/" style="color: #b6d4fe">题库</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/exam2/" style="color: #b6d4fe">试卷中心</a>
+                </li>
+
+
+            </ul>
+            <form class="d-flex" role="button">
+                <div class="nav-item"> <a class="nav-link" href="/user/" style="color: #3dd5f3">你好！{{ request.session.info.name }}</a></div>
+             </form>
+
+
+
+        </div>
+    </div>
+</nav>
+</header>
+    <div class="main">
+        <!--nr start-->
+        <div class="test_main">
+            <div class="nr_left">
+                <div class="test">
+                    <form class='form-control' method="post">
+                            {% csrf_token %}
+                        <div class="test_title">
+                            <p class="test_time">
+                                <i class="icon iconfont">&#xe6fb;</i><b class="alt-1"></b>
+                            </p>
+{#                            <font><a href="/user/"><input type="button" name="tijiao" value="交卷" onclick="coreCount()"></a></font>#}
+                            <font><input type="button" name="tijiao" value="交卷" onclick="my_confirm()"></font>
+
+
+                        </div>
+
+                        <div class="test_content">
+                            <div class="test_content_title">
+                                <h2 style="margin-top: 14px">数据库原理</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count }}</i><span> 题</span>
+                                </p>
+
+                            </div>
+                        </div>
+
+                         <div class="test_content">
+                            <div class="test_content_title">
+                                <h2 style="margin-top: 14px">单选题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count1 }}</i><span> 题，</span><span>每题</span><i class="content_fs">2</i><span> 分</span>
+                                </p>
+
+                            </div>
+                        </div>
+                        {% if single_select_questions %}
+                            {% for test in single_select_questions %}
+                                <div class="test_content_nr">
+                                    <ul>
+                                        <li id="s{{ forloop.counter }}">
+                                            <div class="test_content_nr_tt">
+                                                <i>{{ forloop.counter }}</i><span>({{ test.question_tpye }})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font><b
+                                                    class="icon iconfont">&#xe8c1;</b>
+                                            </div>
+
+                                            <div class="test_content_nr_main">
+                                                <ul>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ forloop.counter }}"
+                                                               value="A"/>
+                                                        <label>
+                                                            A.
+                                                            <p class="ue" style="display: inline;">{{ test.a }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ forloop.counter }}"
+                                                               value="B"/>
+                                                        <label>
+                                                            B.
+                                                            <p class="ue" style="display: inline;">{{ test.b }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ forloop.counter }}" value="C"/>
+                                                        <label>
+                                                            C.
+                                                            <p class="ue" style="display: inline;">{{ test.c }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ forloop.counter }}" value="D"/>
+                                                        <label>
+                                                            D.
+                                                            <p class="ue" style="display: inline;">{{ test.d }}</p>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+
+                       <div class="test_content">
+                            <div class="test_content_title">
+                                <h2 style="margin-top: 14px">判断题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count2 }}</i><span> 题，</span><span>每题</span><i class="content_fs">2</i><span> 分</span>
+                                </p>
+
+                            </div>
+                        </div>
+
+                        {% if  junge_questions %}
+                            {% for test in junge_questions %}
+                                <div class="test_content_nr">
+                                    <ul>
+                                        {% with total1=forloop.counter|add:count1 %}
+
+
+                                        <li id="j{{ total1 }}">
+                                            <div class="test_content_nr_tt">
+                                                <i>{{ total1 }}</i><span>({{ test.question_tpye}})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font><b
+                                                    class="icon iconfont">&#xe8c1;</b>
+                                            </div>
+
+                                            <div class="test_content_nr_main">
+                                                <ul>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ total1 }}"
+                                                               value="A"/>
+                                                        <label>
+                                                            A.
+                                                            <p class="ue" style="display: inline;">{{ test.a }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="radio" class="radioOrCheck"
+                                                               name="radio_{{ total1 }}"
+                                                               value="B"/>
+                                                        <label>
+                                                            B.
+                                                            <p class="ue" style="display: inline;">{{ test.b }}</p>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endwith %}
+
+                            {% endfor %}
+                        {% endif %}
+
+
+
+
+                        <div class="test_content">
+                            <div class="test_content_title">
+                                <h2 style="margin-top: 14px">多选题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count3 }}</i><span> 题，</span><span>每题</span><i class="content_fs">2</i><span> 分</span>
+                                </p>
+
+                            </div>
+                        </div>
+                        {% if multi_select_questions %}
+                            {% for test in multi_select_questions %}
+                                  {% with total2=forloop.counter|add:count1|add:count2 %}
+                                <div class="test_content_nr">
+                                    <ul>
+                                        <li id="m{{ total2 }}">
+                                            <div class="test_content_nr_tt">
+                                                <i>{{ total2 }}</i><span>({{ test.question_tpye }})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font><b
+                                                    class="icon iconfont">&#xe8c1;</b>
+                                            </div>
+
+                                            <div class="test_content_nr_main">
+                                                <ul>
+                                                    <li class="option">
+                                                        <input type="checkbox" class="radioOrCheck"
+                                                               name="radio_{{ total2 }}"
+                                                               value="A"/>
+                                                        <label>
+                                                            A.
+                                                            <p class="ue" style="display: inline;">{{ test.a }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="checkbox" class="radioOrCheck"
+                                                               name="radio_{{ total2 }}"
+                                                               value="B"/>
+                                                        <label>
+                                                            B.
+                                                            <p class="ue" style="display: inline;">{{ test.b }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="checkbox" class="radioOrCheck"
+                                                               name="radio_{{ total2 }}" value="C"/>
+                                                        <label>
+                                                            C.
+                                                            <p class="ue" style="display: inline;">{{ test.c }}</p>
+                                                        </label>
+                                                    </li>
+                                                    <li class="option">
+                                                        <input type="checkbox" class="radioOrCheck"
+                                                               name="radio_{{ total2 }}" value="D"/>
+                                                        <label>
+                                                            D.
+                                                            <p class="ue" style="display: inline;">{{ test.d }}</p>
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endwith %}
+                            {% endfor %}
+                        {% endif %}
+
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+            <div class="nr_right">
+                <div class="nr_rt_main">
+                    <div class="rt_nr1">
+                        <div class="rt_nr1_title">
+                            <h1>
+                                <i style="margin-bottom: 10px" >答题卡</i>
+                            </h1>
+                            <p class="test_time">
+                                <i class="icon iconfont">&#xe8c0;</i><b id="time" class="alt-2"></b>
+                            </p>
+                        </div>
+
+                        <div class="rt_content">
+                            <div class="rt_content_tt">
+                                <h2>单选题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count1 }}</i><span> 题</span>
+                                </p>
+                            </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                    {% for obj in single_select_questions %}
+
+                                          <li ><a class="btn btn-secondary btn-sm active" role="button" href="#s{{ total1 }}">{{ forloop.counter }}</a></li>
+
+                                   {% endfor %}
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="rt_content">
+                            <div class="rt_content_tt">
+                                <h2>判断题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count2 }}</i><span> 题</span>
+                                </p>
+                            </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                    {% for obj in junge_questions %}
+                                         {% with total1=forloop.counter|add:count1 %}
+                                           <li ><a class="btn btn-secondary btn-sm active" role="button" href="#j{{total1 }}">{{total1 }}</a></li>
+                                          {% endwith %}
+                                   {% endfor %}
+
+                                </ul>
+                            </div>
+                        </div>
+
+                       <div class="rt_content">
+                            <div class="rt_content_tt">
+                                <h2>多选题</h2>
+                                <p>
+                                    <span>共</span><i class="content_lit">{{ count3 }}</i><span> 题</span>
+                                </p>
+                            </div>
+                            <div class="rt_content_nr answerSheet">
+                                <ul>
+                                    {% for obj in multi_select_questions %}
+                                        {% with total2=forloop.counter|add:count1|add:count2 %}
+                                          <li class="test-card-item"><a class="btn btn-secondary btn-sm active" role="button" href="#m{{total2 }}">{{total2 }}</a></li>
+                                        {% endwith %}
+                                   {% endfor %}
+
+
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="foot"></div>
+
+       
+    </div>
+
+    <div id="timer" style="color:red"></div>
+
+
+    <div id="warring" style="color:red"></div>
+
+    <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+    <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+    <script href="{% static 'js/jquery.countdown.js'%}"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            var m = {{ time1 }};
+            var s = 0;
+            setInterval(function () {
+                if (m >= 0) {
+                    if (s < 10) {
+                        $('#time').html(m + ':0' + s);
+                    } else {
+                        $('#time').html(m + ':' + s);
+                    }
+                    s--;
+                    if (s < 0) {
+                        s = 59;
+                        m--;
+                    }
+                    if (m == 0 && s < 1) {
+                        {#window.location.href = "result.html?radio=" + 5 + "checkbox=" + 2 + "&json=" + getjson();#}
+
+
+                        window.history.back(-1);
+                    }
+                }
+            }, 1000)
+        })
+        function getQueryString(name) {
+            var url_string = window.location.href; // window.location.href
+
+            var params = url_string.split('?')[1]; // 获取?号后面的参数 name=mick&age=20
+            {#console.log(params)#}
+            if (!params) return null; // 如果无参，返回null
+            var vars = params.split("&"); // 将参数分割成数组 ['name=mick', 'age=20']
+
+            var query_string = {};
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("="); // 将参数的key和值进行分割成 ['name', 'mick']
+                var key = decodeURIComponent(pair[0]);
+                var value = decodeURIComponent(pair[1]); // 参数值
+                if (key === name) {
+                    // 如果匹配到对应key返回
+                    return value;
+                }
+             }
+                 return null;
+            }
+
+        var pid = getQueryString('pid');
+        console.log('pid:'+pid) // 20
+        function load() {
+            $.ajax({
+                url: "/user/test/",
+                type: "get",
+                async: false,
+                traditional: true,
+                data: {
+                    pid: pid
+                },
+                dataType: "JSON",
+                success: function () {
+                    alert("传递成功")  // 数据传递成功之后做的事
+                },
+                error: function (errorMsg) {
+                    console.log(errorMsg); // 打印错误信息
+                }
+            })
+
+        }
+
+
+        $(function () {
+            $('li.option label').click(function () {
+                var examId = $(this).closest('.test_content_nr_main').closest('li').attr('id'); // 得到题目ID
+                var cardLi = $('a[href=#' + examId + ']'); // 根据题目ID找到对应答题卡
+                // 设置已答题
+                if (!cardLi.hasClass('hasBeenAnswer')) {
+                    cardLi.addClass('hasBeenAnswer');
+                }
+
+            });
+        });
+
+
+        function getjson() {
+            var radio = new Array();
+
+            var count_s = {{ count1 }}+{{ count2 }};
+            var count = {{ count }};
+
+            for (var i = 1; i <= count_s; i++) {//获取radio的值
+                var radio_name = new String("radio_" + i);
+                radio[i - 1] = $('input:radio[name=' + radio_name + ']:checked').val()
+                console.log(radio[i - 1])
+            }
+             for (var i = count_s+1; i <= count; i++) {//获取radio的值
+                var check_name = new String("radio_" + i);
+                radio[i - 1] = $('input:checkbox[name=' + check_name + ']:checked').val()
+                console.log(radio[i - 1])
+            }
+
+            var json = JSON.stringify(radio);
+            return json;
+        }
+
+        function my_confirm(event) {
+            var json_data = getjson();
+            var q_id = JSON.stringify({{ q_id }});
+            var user_id = JSON.stringify({{ request.session.info.id }});
+            console.log('json_data:'+json_data)
+            console.log('user_id:'+user_id)
+            console.log('q_id:'+q_id)
+            var msg = "是否确认提交";
+            if (!confirm(msg)) {
+                return false;
+            }
+            else {
+                window.location.href = "result?radio=" + 5 + "checkbox=" + 2 + "&json=" + getjson();
+                $.ajax({
+                    url: "/index2/",
+                    type: "post",
+                    async: false,
+                    traditional: true,
+                    data: {
+                        'json_data': json_data,
+                        'q_id': q_id,
+                        'user_id': user_id,
+                        'pid': pid,
+                        'csrfmiddlewaretoken': "{{ csrf_token }}"
+
+
+                    },
+                    dataType: "JSON",
+                    success: function () {
+                        alert("传递成功")  // 数据传递成功之后做的事
+                        {#window.location.href = "result?radio=" + 5 + "checkbox=" + 2 + "&json=" + getjson();#}
+                        window.history.back();
+                        location.reload();
+                    },
+                    {#error: function (errorMsg) {#}
+                    {#    console.log(errorMsg); // 打印错误信息#}
+
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        window.history.back();
+                        location.reload();
+                        console.log("Ajax error:", textStatus, errorThrown);
+                    }
+                });
+            }
+
+        }
+
+
+
+
+</script>
+
+</body>
+
+</html>
+
+

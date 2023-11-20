@@ -1,0 +1,511 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+    <title>用户中心</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+
+
+
+
+
+    <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+  </head>
+  <body>
+
+<header class="navbar sticky-top  flex-md-nowrap p-0 shadow" style="background-color: grey">
+   <a class="navbar-brand col-lg-2 me-0 px-3 fs-6" style="color: #3dd5f3">欢迎您！{{ request.session.info.name }}</a>
+
+   <h3 class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" style="color: chartreuse">个 人 中 心</h3>
+
+
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="my_confirm()" href="/index2/" style="color: #b6d4fe">返回</a>
+        </div>
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="logout()" href="/user/logout/" style="color: #b6d4fe">退出</a>
+        </div>
+        <h4></h4>
+    </div>
+</header>
+
+ <div class="shade"></div>
+  <div class="container-fluid">
+      <div class="row">
+          <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
+              <div class="position-sticky pt-3 sidebar-sticky">
+                  <ul class="nav flex-column list-unstyled">
+
+                      <li class="nav-item">
+
+                      <button class="nav-link btn btn-toggled-inline-flex  rounded border-0 collapsed"
+                              data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false" >
+                          <span data-feather="users" class="align-text-bottom" ></span>
+                                 个人信息
+                      </button>
+
+                      <div class="collapse" id="home-collapse" style="margin-left: 15px" >
+
+                          <ul class="btn-toggle-nav list-unstyled fw-normal pb-3 small" style="padding-left: 10px; text-align: left;">
+                              {% for obj in data3 %}
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded" >姓名：</span><span>{{ request.session.info.name }}</span>
+                              </li>
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">性别：</span><span>
+                                       {% if obj.gender == 1 %}
+                                           男
+                                       {% elif obj.gender == 2 %}
+                                              女
+                                       {% endif %}
+                              </span>
+                              </li>
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">邮箱：</span><span>{{ obj.email }}</span>
+                              </li>
+                               <li><span class="link-dark d-inline-flex text-decoration-none rounded">ID：</span><span>{{ request.session.info.id }}</span>
+                                  <li><button type="button" class="btn btn-secondary btn-sm" id="change">修改</button>
+{#                                      <button class="btn-info fw-normal pb-1 small ">修改信息</button>#}
+                              </li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </li>
+
+
+
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#show_grade">
+                              <span data-feather="file-text" class="align-text-bottom"></span>
+                              成绩展示
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#analyst_grade">
+                              <span data-feather="file" class="align-text-bottom"></span>
+                              答题分析
+                          </a>
+                      </li>
+
+                      <li class="nav-item">
+                          <a class="nav-link" href="/user/error/">
+                              <span data-feather="layers" class="align-text-bottom"></span>
+                               错题本
+                          </a>
+                      </li>
+                  </ul>
+
+
+
+
+              </div>
+
+
+
+
+          </nav>
+
+
+
+
+          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+
+               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2" id="show_grade">成绩展示</h1>
+
+              </div>
+              <h4 style="color: #dfc2c4">数据库原理</h4>
+                <div class="table-responsive">
+                  <table class="table  table-light  table-hover table-responsive-sm">
+                      <thead  class="table-primary">
+                      <tr>
+                          <th scope="col">试卷ID</th>
+                          <th scope="col">试卷名称</th>
+                          <th scope="col">试卷类型</th>
+                          <th scope="col">题目数量</th>
+                          <th scope="col">总分</th>
+                          <th scope="col">得分</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       {% for obj in data %}
+                        <tr>
+                            <th>{{ obj.paper_id }}</th>
+                            <th>{{ obj.paper__title}}</th>
+                            <th>{{ obj.paper__paper_type}}</th>
+                            <th>{{ obj.num }}</th>
+                            <th>{{ obj.paper__score}}</th>
+                            <th>{{ obj.sum }}</th>
+
+                        </tr>
+                     {% endfor %}
+
+                      </tbody>
+                  </table>
+              </div>
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2" id="analyst_grade">答题分析</h1>
+                  <div class="btn-toolbar mb-0">
+                      <div class="btn-group me-2 btn-outline-secondary">
+                      </div>
+
+                  </div>
+              </div>
+              <div class="container">
+                  <div class="container">
+                      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-2 bg-white">
+                          <div class="bg-danger-subtle" >
+                                <canvas class="chart" width="500" height="350">
+
+                               </canvas>
+                          </div>
+                          <div class="col bg-dark-subtle bg-opacity-20" >
+                               <canvas class="chart1" width="700" height="350">
+
+                               </canvas>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
+
+
+
+
+             <!-- 修改个人信息的模态框 -->
+              <div class="modal fade" id="change-information-modal" tabindex="-1" role="dialog"
+                   aria-labelledby="change-information-title" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <!-- 模态框标题 -->
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="change-information-title">修改个人信息</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <!-- 模态框主体 -->
+                          <div class="modal-body">
+                              <form>
+                                  <!-- 姓名输入框 -->
+                                  {% for obj in data3 %}
+                                      <div class="form-group" style="font-size: large">
+                                          <label for="name-input">姓名</label>
+                                          <input type="text" class="form-control" id="name-input" placeholder="请输入姓名"
+                                                 value="{{ request.session.info.name }}" readonly>
+                                      </div>
+{#                                      <!-- ID输入框 -->#}
+                                      <div class="form-group" style="font-size: large">
+                                          <label for="id-input">ID</label>
+                                          <input type="text" class="form-control"   id="id-input" placeholder="请输入ID"
+                                                 value="{{ request.session.info.id }}" readonly>
+                                      </div>
+                                      <div class="form-group" style="font-size: large;margin-top: 6px" >
+                                          <label for="gender">性别</label>
+                                          <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="gender-radio"
+                                                     id="gender-male" value="1"
+                                                     {% if obj.gender == 1 %}checked{% endif %}>
+                                              <label class="form-check-label" for="gender-male">男</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="radio" name="gender-radio"
+                                                     id="gender-female" value="2"
+                                                     {% if obj.gender == 2 %}checked{% endif %}>
+                                              <label class="form-check-label" for="gender-female">女</label>
+                                          </div>
+                                      </div>
+                                      <!-- 邮箱输入框 -->
+                                      <div class="form-group" style="font-size: large">
+                                          <label for="email-input">邮箱</label>
+                                          <input type="email" class="form-control" style="color: #3dd5f3" id="email-input" placeholder="请输入邮箱"
+                                                 value="{{ obj.email }}">
+                                      </div>
+                                      </form>
+                          </div>
+                          <!-- 模态框底部按钮 -->
+                          {% endfor %}
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-btn">取消</button>
+                              <button type="button" class="btn btn-primary" id="save-btn">保存</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </main>
+      </div>
+  </div>
+
+  <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+  <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+          integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+          integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+          crossorigin="anonymous"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/sidebars.js' %}"></script>
+  <script src="{% static 'js/echarts.min.js' %}"></script>
+   <script type="text/javascript">
+       function logout(){
+           var msg = "是否确认退出登录";
+           if (confirm(msg)) {
+               window.location.href = "user_login.html";
+           } else if (window.event.returnValue) {
+               window.event.returnValue = false;
+           } else {
+               return false;
+           }
+       }
+        function my_confirm(){
+              window.history.back(-1);
+        }
+        $(document).ready(function () {
+           console.log('JavaScript 代码被成功加载！');
+           // 获取触发模态框的按钮元素
+
+           var btn = document.getElementById("change");
+           btn.onclick = function () {
+               $('#change-information-modal').modal('show');
+           };
+               $(".close").click(function () {
+                   $("#modal").modal("hide");
+               });
+
+
+       });
+
+       $(function() {
+        // 点击取消按钮，退出模态框
+        $('#cancel-btn').click(function() {
+            $('#change-information-modal').modal('hide');
+        });
+
+        // 点击保存按钮，将修改后的个人信息提交到服务器
+        $('#save-btn').click(function() {
+            // 获取各个输入框的值
+            {#var name = $('#name-input').val();#}
+            var id = $('#id-input').val();
+            var gender = $('input[name="gender-radio"]:checked').val();
+            var email = $('#email-input').val();
+
+            // 发送POST请求提交表单数据
+            $.ajax({
+                url: "/user/", // 修改为你的表单提交路由
+                type: "POST",
+                data: {
+                    'name': name,
+                    'id': id,
+                    'gender': gender,
+                    'email': email,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    // 处理修改成功的情况
+                    alert("修改成功！");
+                    $('#change-information-modal').modal('hide');
+                    // 刷新页面
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // 处理修改失败的情况
+                    alert("修改失败，请重试！");
+                }
+            });
+        });
+    });
+       var mychart=echarts.init(document.querySelector('.chart'))
+       var mychart1=echarts.init(document.querySelector('.chart1'))
+       option = {
+           title: {
+               text: '知识点分析',
+               subtext: '数据库原理',
+               left: 'center'
+           },
+           tooltip: {
+               trigger: 'item'
+           },
+           legend: {
+               orient: 'vertical',
+               left: 'left'
+           },
+           series: [
+               {
+                   name: '知识点占比',
+                   type: 'pie',
+                   radius: '60%',
+                   label: {
+                       show: false,
+                   },
+                   data: [
+                       {value: 7, name: '数据库概念'},
+                       {value: 5, name: '数据库逻辑模型'},
+                       {value: 4, name: '数据库模式'},
+                       {value: 9, name: '关系数据库标准语言SQL'},
+                       {value: 5, name: '关系数据结构-码'},
+                       {value: 3, name: '视图'},
+                       {value: 2, name: '索引'},
+                       {value: 20, name: '关系模式与范式'},
+                       {value: 6, name: '数据库设计'},
+                       {value: 9, name: '关系代数运算'},
+                       {value: 14, name: '数据库保护'}
+                   ],
+                   emphasis: {
+                       itemStyle: {
+                           shadowBlur: 10,
+                           shadowOffsetX: 0,
+                           shadowColor: 'rgba(0, 0, 0, 0.5)'
+                       }
+                   }
+               }
+           ]
+       };
+       option1 = {
+           color: ['#67F9D8', '#FFE434', '#56A3F1', '#FF917C', '#FF917C',
+               '#FF917C', '#FF917C', '#FF917C', '#FF917C', '#FF917C', '#FF917C'],
+           title: {
+               text: '知识点掌握情况',
+               color: 'white'
+           },
+           legend: {},
+           radar: [
+               {
+                   indicator: [
+                       {text: '数据库概念'},
+                       {text: '数据库逻辑模型'},
+                       {text: '数据库模式'},
+                       {text: '关系数据库标准语言SQL'},
+                       {text: '关系数据结构-码'},
+                       {text: '视图'},
+                       {text: '索引'},
+                       {text: '关系模式与范式'},
+                       {text: '数据库设计'},
+                       {text: '关系代数运算'},
+                       {text: '数据库保护'}
+                   ],
+                   center: ['33%', '50%'],
+                   radius: 120,
+                   startAngle: 90,
+                   splitNumber: 4,
+                   shape: 'circle',
+                   axisName: {
+                       formatter: '【{value}】',
+                       color: '#808A87',
+                   },
+                   splitArea: {
+                       areaStyle: {
+                           color: ['#77EADF', '#26C3BE', '#64AFE9', '#428BD4',],
+                           {#shadowColor: 'rgba(0, 0, 0, 0.2)',#}
+                           shadowBlur: 10
+                       }
+                   },
+                   axisLine: {
+                       lineStyle: {
+                           color: 'rgba(0, 0, 0,12 )'
+                       }
+                   },
+                   splitLine: {
+                       lineStyle: {
+                           color: 'rgba(211, 253, 250, 0.8)'
+                       }
+                   }
+               },
+
+           ],
+           series: [
+               {
+                   type: 'radar',
+                   emphasis: {
+                       lineStyle: {
+                           width: 4
+                       }
+                   },
+                   data: [
+                       {
+                           value: {{ k_data }},
+                           {#name: '初始',#}
+                           areaStyle: {
+                               color: 'rgba(255, 12, 52, 0.6)'
+                           }
+                       }
+
+                   ]
+               },
+
+           ]
+       };
+       mychart.setOption(option);
+       mychart1.setOption(option1);
+   </script>
+  </body>
+</html>

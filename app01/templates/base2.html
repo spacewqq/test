@@ -1,0 +1,95 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+{#    <meta name="description" content="">#}
+{#    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">#}
+{#    <meta name="generator" content="Hugo 0.108.0">#}
+{#    <title>Album example · Bootstrap v5.3</title>#}
+
+
+    <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+
+
+
+    <style>
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+
+  </head>
+  <body>
+
+
+
+
+<header>
+   <nav class="navbar navbar-expand-lg" style="background-color: grey " >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="color: chartreuse;text-align: center" >
+            <img src="{% static 'img/logo4.png' %}" alt="Logo" width="38" height="32"
+                       class="d-inline-block align-text-top" >
+            深度练习
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/index2" style="color: #b6d4fe">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/total/problems/" style="color: #b6d4fe">题库</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/exam2/" style="color: #b6d4fe">试卷中心</a>
+                </li>
+
+
+
+            </ul>
+            <form class="d-flex" role="button">
+                <div class="nav-item"> <a class="nav-link" href="/user/" style="color: #3dd5f3">你好！{{ request.session.info.name }}</a></div>
+             </form>
+
+
+
+        </div>
+    </div>
+</nav>
+</header>
+
+
+
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+
+ </body>
+   <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+   <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.bundle.min.js' %}"></script>
+
+
+</html>

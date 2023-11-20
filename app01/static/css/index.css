@@ -1,0 +1,100 @@
+.form-index {
+
+  margin: 0 auto;
+
+  width: 1000px;
+  height: 300px;
+  padding: 40px;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #adb5bd;
+  text-align: center;
+}
+.box{
+	width:600px;
+	height:100%;
+	min-height:550px;
+	border: 1px solid #c0c0c0;
+}
+
+/**box上*/
+.box-top{
+	margin: 0 auto;
+   	width: auto;
+   	height:100%;
+   	min-height:80px;
+   	border: 1px solid #c0c0c0;
+   	margin-top: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align:center;
+	padding:12px;
+}
+/**box中*/
+.box-center{
+	margin: 0 auto;
+	width: auto;
+	height: 100%;
+	min-height:400px;
+	border: 1px solid #c0c0c0;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom:5px;
+	text-align:center;
+	padding:12px;
+	/* white-space:nowrap;*字体不允许换行 */
+}
+
+
+/**box上左*/
+.box-top-left{
+	width:300px;
+	height:100%;
+	min-height:60px;
+	float: left;
+	text-align:center;
+	padding:10px;
+	border: 1px solid #c0c0c0;
+	/* border-right: 1px solid #c0c0c0; */
+}
+/**box上右*/
+.box-top-right{
+	width:800px;
+	height:100%;
+	min-height:60px;
+	float: left;
+	text-align:center;
+	margin-left:5px;
+	padding:10px;
+	border: 1px solid #c0c0c0;
+}
+
+
+
+/**box上左*/
+.box-center-left{
+	width:300px;
+	height:100%;
+	min-height:380px;
+	float: left;
+	text-align:center;
+	padding:10px;
+	border: 1px solid #c0c0c0;
+	/* border-right: 1px solid #c0c0c0; */
+}
+/**box上右*/
+.box-center-right{
+	width:800px;
+	height:100%;
+	min-height:380px;
+	float: left;
+	text-align:center;
+	margin-left:5px;
+	padding:10px;
+	border: 1px solid #c0c0c0;
+	overflow:scroll;
+}
+

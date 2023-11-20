@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>jQuery在线考试倒计时界面</title>
+      <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/test.css' %}">
+    <link href="{% static 'css/iconfont.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/test.css' %}" rel="stylesheet" type="text/css" />
+
+    <style>
+        .hasBeenAnswer {
+            background: #5d9cec;
+            color: #fff;
+        }
+         .pagination {
+            margin-top: 20px;
+        }
+        .reading h2 {
+            width: 100%;
+            margin: 20px 0 70px;
+            text-align: center;
+            line-height: 2;
+            font-size: 20px;
+            color: #59595b;
+        }
+
+            .reading h2 a {
+                text-decoration: none;
+                color: #59595b;
+                font-size: 20px;
+            }
+
+                .reading h2 a:hover {
+                    color: #2183f1;
+                }
+    </style>
+</head>
+
+<body>
+
+    <header>
+   <nav class="navbar navbar-expand-lg " style="background-color: grey " >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">做题了吗</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/index2">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/total/problems/">题库</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/curriculum/">课程</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/exam2/">试卷中心</a>
+                </li>
+
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                         aria-expanded="false">你好！{{ request.session.info.name }}</a>
+                      <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#">个人中心</a>
+                          <a class="dropdown-item" href="#">退出登录</a>
+                          <a class="dropdown-item" href="#">注销</a>
+                      </div>
+                  </li>
+
+            </ul>
+
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="搜索" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">搜索</button>
+             </form>
+
+        </div>
+    </div>
+</nav>
+   </header>
+    <div class="main">
+
+
+
+
+    <div class="panel-body" style="width: 800px">
+        <table class="table table-striped ">
+            <thead>
+            <tr>
+                <th>课程</th>
+                <th>章节</th>
+                <th>ID</th>
+                <th>标题</th>
+                <th>题目类型</th>
+                <th>题目选项</th>
+                <th>难度</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in data %}
+                <tr>
+                    <th>{{ obj.course_id }}</th>
+                    <th>{{ obj.chapter }}</th>
+                    <th>{{ obj.id }}</th>
+                    <td>{{ obj.title }}</td>
+                    <td>{{ obj.question_tpye }}</td>
+                    <td>{{ obj.question_item }}</td>
+                    <td>{{ obj.difficulty }}</td>
+                    {#                            <td>{{ obj.create_time|date:"Y-m-d" }}</td>#}
+                    <td>
+                        <a class="btn btn-primary btn-xs" href="/user/{{ obj.id }}/edit">答题</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if data.has_previous %}
+                <li class="page-item"><a class="page-link"  href="?page={{ data.previous_page_number }}">上一页</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+            {% endif %}
+
+            {% for num in data.paginator.page_range %}
+                {% if num == data.number %}
+                    <li class="page-item active "><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                    <li class="page-item"><a  class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if data.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ data.next_page_number }}">下一页</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+            {% endif %}
+        </ul>
+      </nav>
+    </div>
+    </div>
+
+
+
+
+
+    <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+    <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+    <script href="{% static 'js/jquery.countdown.js'%}"></script>
+
+    <script type="text/javascript">
+
+
+
+
+  </script>
+
+</body>
+
+</html>
+
+

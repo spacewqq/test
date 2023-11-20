@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}shouye{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+
+
+
+
+
+<main>
+
+  <section class="py-md-0 text-center container">
+    <div class="row py-lg-0">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">精品课程</h1>
+        <p class="lead text-muted">精彩的学习旅程从下面开始</p>
+        <p>
+          <a href="/total/problems/" class="btn btn-primary my-2">习题库</a>
+          <a href="/user/exam2/" class="btn btn-secondary my-2">试卷中心</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c1.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">计算机网络</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px">本课程讲述了计算机网络的基本结构与基本原理，计算机网络的体系结构及各层协议，网络安全的基本原理和防御技术,使您从整体上理解网络的基础知识。</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">100人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c2.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">数据库原理</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px">数据库管理已经从一种专门的计算机应用发展为现代企业管理中的常用工具，无论你将来从事哪个行业的工作，数据库知识都是需要的。</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">94人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c3.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">计算机基础教程</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px;">人类一直在探索自动计算的奥秘，计算机自诞生以来一直深刻地改变着世界。未来不论是计算机科学家，还是普通人，都要学会运用计算思维和工具来解决工作和生活中遇到的问题。</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">90人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c4.jpg' %}"class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">人工智能</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px">智创未来，未来已来。这是一个人工智能的时代。 发明了围棋的尧生活于公元前约 2300 年，而在四千多年之后，AlphaGo在围棋项目上战胜了人类顶尖棋手，宣告在围棋项目上机器智能已超越了人类智能。 </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">80人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c5.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">机器学习</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px">机器学习是人工智能的核心研究领域之一， 其研究动机是为了让计算机系统具有人的学习能力以便实现人工智能。本课程将以数据挖掘中的分类任务为例，首先讲解分类模型的评估，然后讲解一批经典而常用的机器学习技术。</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">76人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'img/c6.jpg' %}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">计算机组成原理</text></svg>
+            <div class="card-body">
+              <p class="card-text" style="font-size: 10px">本课程从计算机内信息表示、门电路、基本元件、功能部件到微架构，以新兴开放指令集架构RISC-V为模型机，循序渐进讲述计算机系统组成及工作原理、计算机硬件设计原理与设计思路。</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">观看</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">练习</button>
+                </div>
+                <small class="text-muted">70人推荐</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

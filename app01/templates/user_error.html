@@ -1,0 +1,265 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>错题本</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+    <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+
+     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <style>
+
+        .shade {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .3);
+            /* 这里一定要把遮罩层移到重叠元素的上层，就可以造成父窗口无法操作的效果 */
+            z-index: 1;
+        }
+
+    </style>
+
+
+  </head>
+
+
+<body>
+   <header class="navbar sticky-top  flex-md-nowrap p-0 shadow" style="background-color: grey">
+   <a class="navbar-brand col-lg-2 me-0 px-3 fs-6" style="color: #3dd5f3">欢迎您！{{ request.session.info.name }}</a>
+
+   <h3 class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" style="color: chartreuse">个 人 中 心</h3>
+
+
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="my_confirm()" href="/index2/" style="color: #b6d4fe">返回</a>
+        </div>
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="logout()" href="/user/logout/" style="color: #b6d4fe">退出</a>
+        </div>
+        <h4></h4>
+    </div>
+</header>
+
+
+
+
+    <!-- 遮罩层 -->
+    <div class="shade"></div>
+
+   <div class="container-fluid">
+      <div class="row">
+          <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
+              <div class="position-sticky pt-3 sidebar-sticky">
+                  <ul class="nav flex-column list-unstyled">
+
+                      <li class="nav-item">
+                      <button class="nav-link btn btn-toggled-inline-flex  rounded border-0 collapsed"
+                              data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                          <span data-feather="users" class="align-text-bottom"></span>
+                                 个人信息
+                      </button>
+                      <div class="collapse" id="home-collapse" style="margin-left: 15px" >
+
+                          <ul class="btn-toggle-nav list-unstyled fw-normal pb-3 small" style="padding-left: 10px; text-align: left;">
+                              {% for obj in data3 %}
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">姓名：</span><span>{{ request.session.info.name }}</span>
+                              </li>
+                             <li><span class="link-dark d-inline-flex text-decoration-none rounded">性别：</span><span>
+                                       {% if obj.gender == 1 %}
+                                           男
+                                       {% elif obj.gender == 2 %}
+                                              女
+                                       {% endif %}
+                              </span>
+                              </li>
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">邮箱：</span><span>{{ obj.email }}</span>
+                              </li>
+                               <li><span class="link-dark d-inline-flex text-decoration-none rounded">ID：</span><span>{{ request.session.info.id }}</span>
+                              </li>
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </li>
+
+
+
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="/user/#show_grade">
+                              <span data-feather="file-text" class="align-text-bottom"></span>
+                              成绩展示
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="/user/#analyst_grade">
+                              <span data-feather="file" class="align-text-bottom"></span>
+                              答题分析
+                          </a>
+                      </li>
+
+                      <li class="nav-item">
+                          <a class="nav-link" href="/user/error/">
+                              <span data-feather="layers" class="align-text-bottom"></span>
+                                  错题本
+                          </a>
+                      </li>
+                  </ul>
+
+
+
+
+              </div>
+
+
+
+
+          </nav>
+
+
+
+
+          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2" id="show_grade">错题本</h1>
+              </div>
+              <h4 style="color: #dfc2c4">数据库原理</h4>
+                <div class="table-responsive">
+                  <table class="table  table-light  table-hover table-responsive-sm">
+                      <thead  class="table-primary">
+                      <tr>
+                          <th scope="col">题目ID</th>
+                          <th scope="col">试卷名称</th>
+                          <th scope="col">难易度</th>
+{#                          <th scope="col">题目</th>#}
+                          <th scope="col">正确答案</th>
+                          <th scope="col">我的答案</th>
+                          <th scope="col">知识点</th>
+                          <th scope="col">详细</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       {% for obj in data %}
+                        <tr>
+                            <td>{{ obj.question_id }}</td>
+                            <td>{{ obj.paper__title}}</td>
+                            <td>{{ obj.question__difficulty}}</td>
+{#                            <td>{{ obj.question__title}}</td>#}
+                            <td>{{ obj.question__correct}}</td>
+                            <td>{{ obj.answer}}</td>
+                            <td>{{ obj.question__skills}}</td>
+                            <td><button type="button" class="btn btn-link btn-sm" id="modal-btn-{{ obj.question_id }}" data-toggle="modal" data-target="#modal{{ obj.question_id }}">详细</button></td>
+                        </tr>
+                     {% endfor %}
+
+                      </tbody>
+                  </table>
+              </div>
+
+
+
+
+              {% for obj in data %}
+                  <div class="modal fade" id="modal{{ obj.question_id }}" tabindex="-1" role="dialog"
+                       aria-labelledby="modal{{ obj.question_id }}Title" aria-hidden="true">
+                      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="modal{{ obj.question_id }}Title">题目详细信息</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <p><strong>题目：</strong>{{ obj.question__title }}</p>
+                                  <p><strong>选项：</strong></p>
+                                  <ul>
+                                      <li>A. {{ obj.question__a }}</li>
+                                      <li>B. {{ obj.question__b }}</li>
+                                      <li>C. {{ obj.question__c }}</li>
+                                      <li>D. {{ obj.question__d }}</li>
+                                  </ul>
+                                  <p style="color: red"><strong>正确答案：</strong>{{ obj.question__correct }}</p>
+                                  <p style="color: #9ec5fe"><strong>我的答案：</strong>{{ obj.answer }}</p>
+                                  <p style="color: #0f6c8d"><strong>知识点：</strong>{{ obj.question__skills__skill_name }}</p>
+                                  <p style="color: #13653f"><strong>难易度：</strong>{{ obj.question__difficulty }}</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              {% endfor %}
+
+
+
+
+          </main>
+
+      </div>
+  </div>
+
+
+
+
+
+
+
+    <!-- 登录按钮 -->
+
+
+   <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+   <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+           integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+           crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+           integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+           crossorigin="anonymous"></script>
+   <script src="{% static 'js/dashboard.js' %}"></script>
+   <script src="{% static 'js/sidebars.js' %}"></script>
+   <script src="{% static 'js/echarts.min.js' %}"></script>
+
+   <script type="text/javascript">
+       function logout(){
+            var msg = "是否确认退出登录";
+                if (confirm(msg) == true) {
+                    window.location.href = "user_login.html"
+                    {#window.history.back(-1);#}
+                } else {
+                    return false;
+                }
+       }
+
+
+       $(document).ready(function () {
+           console.log('JavaScript 代码被成功加载！');
+           // 获取触发模态框的按钮元素
+           {% for obj in data %}
+           var btn = document.getElementById("modal-btn-{{ obj.question_id }}");
+           btn.onclick = function () {
+               $('#modal{{ obj.question_id }}').modal('show');
+           };
+               $(".close").click(function () {
+                   $("#modal").modal("hide");
+               });
+            {% endfor %}
+
+       });
+
+
+
+
+
+   </script>
+
+
+
+
+
+
+</body>
+</html>
+
+

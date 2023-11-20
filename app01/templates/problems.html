@@ -1,0 +1,539 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.108.0">
+    <title>用户中心</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+
+
+
+
+
+    <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+
+    <style>
+      .login-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        /* 遮罩层 */
+        .shade {
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .3);
+            /* 这里一定要把遮罩层移到重叠元素的上层，就可以造成父窗口无法操作的效果 */
+            z-index: 1;
+        }
+        /* 模态框 */
+        .login-box {
+            display: none;
+            width: 350px;
+            height: 250px;
+            border: 1px solid rgb(216, 216, 216);
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(10, 20, 20, .2), -5px -5px 10px rgba(10, 20, 20, .2);
+            background-color: #fff;
+            /* 和遮罩层同理，模态框一定要在最上层 */
+            z-index: 1;
+        }
+        .login-box .title {
+            cursor: move;
+            user-select: none;  /* 禁止用户选中文字 */
+            position: relative;
+            width: 100%;
+            height: 70px;
+            color: #3f3f3f;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 70px;
+        }
+        .login-box .title .exit {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 30px;
+        }
+        .login-box .title .exit:hover {
+            cursor: pointer;
+            text-shadow: 2px 2px 4px rgba(10, 20, 20, .5);
+        }
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .login-box form .input-box {
+            width: 60%;
+            height: 35px;
+            margin-bottom: 20px;
+            padding: 0px 10px;
+            border: 1px solid #3f3f3f;
+            border-radius: 8px;
+            color: #3f3f3f;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .login-box form .input-box:focus {
+            outline: none;
+        }
+        .login-box form .login-but {
+            width: 120px;
+            height: 35px;
+            border: none;
+            background-color: #fa8282;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .login-box form .login-but:hover {
+            background-color: #f36886;
+        }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+     <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+
+  </head>
+  <body>
+
+<header class="navbar sticky-top  flex-md-nowrap p-0 shadow" style="background-color: grey">
+   <a class="navbar-brand col-lg-2 me-0 px-3 fs-6" href="#">欢迎您！{{ request.session.info.name }}</a>
+
+   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">个人中心</a>
+
+
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="my_confirm()" href="/index2/">返回</a>
+        </div>
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" onclick="logout()" href="/user/logout/">退出</a>
+        </div>
+        <h4></h4>
+    </div>
+</header>
+
+
+  <div class="container-fluid">
+      <div class="row">
+          <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar2 collapse">
+              <div class="position-sticky pt-3 sidebar-sticky">
+                  <ul class="nav flex-column list-unstyled">
+
+                      <li class="nav-item">
+                      <button class="nav-link btn btn-toggled-inline-flex  rounded border-0 collapsed"
+                              data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false">
+                          <span data-feather="users" class="align-text-bottom"></span>
+                                 个人信息
+                      </button>
+                      <div class="collapse" id="home-collapse" style="text-align:center">
+                          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">姓名：</span><span>{{ request.session.info.name }}</span>
+                              </li>
+                              <li><span class="link-dark d-inline-flex text-decoration-none rounded">ID：</span><span>{{ request.session.info.id }}</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </li>
+
+
+
+                      <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#show_grade">
+                              <span data-feather="file-text" class="align-text-bottom"></span>
+                              成绩展示
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#analyst_grade">
+                              <span data-feather="file" class="align-text-bottom"></span>
+                              答题分析
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="/user/error/">
+                              <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+                              历史答题记录
+                          </a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="/user/error/">
+                              <span data-feather="layers" class="align-text-bottom">错题本</span>
+                          </a>
+                      </li>
+                  </ul>
+
+
+
+
+              </div>
+
+
+
+
+          </nav>
+
+
+
+
+          <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+               <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                  <h1 class="h2" id="show_grade">错题本</h1>
+              </div>
+              <h4 style="color: #dfc2c4">数据库原理</h4>
+                <div class="table-responsive">
+                  <table class="table  table-light  table-hover table-responsive-sm">
+                      <thead  class="table-primary">
+                      <tr>
+                          <th scope="col">题目ID</th>
+                          <th scope="col">试卷名称</th>
+                          <th scope="col">试卷类型</th>
+{#                          <th scope="col">题目</th>#}
+{#                          <th scope="col">正确答案</th>#}
+                          <th scope="col">详细</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>固定</td>
+                            <td>固定</td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#1"  id="myBtn">Details</button></td>
+
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>固定</td>
+                            <td>固定</td>
+                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#2"  id="myBtn">Details</button></td>
+
+                        </tr>
+
+
+                      </tbody>
+                  </table>
+              </div>
+
+
+                  <div class="modal fade" id="1" tabindex="-1" role="dialog" aria-labelledby="1Label" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="1Label">你好吗</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                 B
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal fade" id="2" tabindex="-1" role="dialog" aria-labelledby="2Label" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="2Label">你好吗</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                 B
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+
+
+
+
+              <div class="shade"></div>
+              <!-- 登录按钮 -->
+              <span class="button" id="but">立即登录</span>
+              <!-- 模态框 -->
+              <div class="login-box">
+                  <div class="title">
+                      用户登录
+                      <span class="exit">×</span>
+                  </div>
+                  <form action="">
+                      <input type="text" class="input-box" placeholder="用户名">
+                      <input type="password" class="input-box" placeholder="密码">
+                      <input type="submit" class="login-but" value="登录">
+                  </form>
+              </div>
+
+
+              <div class="test_content">
+                  <div class="test_content_title">
+                      <h2 style="margin-top: 14px">数据库原理</h2>
+                      <p>
+                          <span>选择题: </span><i
+                              class="content_lit">{{ select_questions|length }}</i><span> 道，</span><span>填空题： </span><i
+                              class="content_lit">{{ fill_questions|length }}</i><span> 道，</span><span>多选题： </span><i
+                              class="content_lit">{{ multi_select_questions|length }}</i><span> 道，</span><span>合计: </span><i
+                              class="content_fs">{{ count }}</i><span> 分</span>
+                      </p>
+
+                  </div>
+              </div>
+
+              <div class="test_content_nr">
+                  {% if select_questions %}
+                      <div class="test_content_nr_title">单选题</div>
+                      {% for test in select_questions %}
+                          <ul>
+                              <li id="{{ forloop.counter }}">
+                                  <div class="test_content_nr_tt">
+                                      <i>{{ forloop.counter }}</i><span>({{ test.question_tpye }})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font>
+                                  </div>
+                                  <div class="test_content_nr_main">
+                                      <ul>
+                                          {% for choice in test.choices %}
+                                              <li class="option{% if forloop.parentloop.parentloop.counter == 1 %} select{% endif %}">
+                                                  <input type="radio" class="radioOrCheck" name="select"
+                                                         value="{{ test.id }}{{ forloop.counter }}"
+                                                         id="{{ test.id }}{{ forloop.counter }}">
+                                                  <label for="{{ test.id }}{{ forloop.counter }}">{{ choice }}</label>
+                                              </li>
+                                          {% endfor %}
+                                      </ul>
+                                  </div>
+                              </li>
+                          </ul>
+                      {% endfor %}
+                  {% endif %}
+
+                  {% if fill_questions %}
+                      <div class="test_content_nr_title">判断题</div>
+                      {% for test in fill_questions %}
+                          <ul>
+                              <li id="{{ forloop.counter }}">
+                                  <div class="test_content_nr_tt">
+                                      <i>{{ forloop.counter }}</i><span>({{ test.question_tpye }})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font>
+                                  </div>
+                                  <div class="test_content_nr_main">
+                                      <ul>
+                                          <li class="option{% if forloop.parentloop.parentloop.counter == 1 %} select{% endif %}">
+                                              <input type="text" name="fill" value="">
+                                          </li>
+                                      </ul>
+                                  </div>
+                              </li>
+                          </ul>
+                      {% endfor %}
+                  {% endif %}
+
+                  {% if multi_select_questions %}
+                      <div class="test_content_nr_title">多选题</div>
+                      {% for test in multi_select_questions %}
+                          <ul>
+                              <li id="{{ forloop.counter }}">
+                                  <div class="test_content_nr_tt">
+                                      <i>{{ forloop.counter }}</i><span>({{ test.question_tpye }})</span><span>({{ test.score }}分)</span><font>{{ test.title }}</font>
+                                  </div>
+                                  <div class="test_content_nr_main">
+                                      <ul>
+                                          {% for choice in test.choices %}
+                                              <li class="option{% if forloop.parentloop.parentloop.counter == 1 %} select{% endif %}">
+                                                  <input type="checkbox" class="radioOrCheck" name="multi_select"
+                                                         value="{{ test.id }}{{ forloop.counter }}"
+                                                         id="{{ test.id }}{{ forloop.counter }}">
+                                                  <label for="{{ test.id }}{{ forloop.counter }}">{{ choice }}</label>
+                                              </li>
+                                          {% endfor %}
+                                      </ul>
+                                  </div>
+                              </li>
+                          </ul>
+                      {% endfor %}
+                  {% endif %}
+
+              </div>
+
+
+              function updateTestCard() {
+              $(".test-card-item").removeClass("answered");
+              $(".test-content-nr li input:checked").each(function() {
+              var questionType = $(this).parents("li").data("type");
+              var questionIndex = $(this).parents("li").attr("id");
+              $(".test-card-item[href='#" + questionIndex + "']").addClass("answered");
+              });
+              }
+
+              $(function() {
+              // 初始化答题卡状态
+              updateTestCard();
+
+              // 监听选择题、填空题、多选题的选项选择变化
+              $(".test-content-nr input[type='radio'], .test-content-nr input[type='text'], .test-content-nr
+              input[type='checkbox']").change(function() {
+              updateTestCard();
+              });
+
+              // 监听答题卡的点击事件
+              $(".test-card-item").click(function() {
+              $(this).addClass("current").siblings().removeClass("current");
+              var questionIndex = $(this).attr("href");
+              $("html, body").animate({
+              scrollTop: $(questionIndex).offset().top
+              }, 500);
+              return false;
+              });
+
+              });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              <!-- 模态框的HTML代码 -->
+              <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">模态框标题</h4>
+                          </div>
+                          <div class="modal-body">
+                              <p>模态框内容</p>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+              <button class="button btn-danger"><span class="but">立即登录</span></button>
+
+
+          </main>
+
+      </div>
+  </div>
+  <script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+
+  <script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/modal.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+          integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+          integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+          crossorigin="anonymous"></script>
+  <script src="{% static 'js/dashboard.js' %}"></script>
+  <script src="{% static 'js/sidebars.js' %}"></script>
+  <script src="{% static 'js/echarts.min.js' %}"></script>
+
+   <script type="text/javascript">
+       function logout(){
+            var msg = "是否确认退出登录";
+                if (confirm(msg) == true) {
+                    window.location.href = "user_login.html"
+                    {#window.history.back(-1);#}
+                } else {
+                    return false;
+                }
+       }
+
+       let but = document.querySelector('.but');
+        let shade = document.querySelector('.shade');
+        let loginBox = document.querySelector('.login-box');
+        let title = document.querySelector('.title');
+        let exit = document.querySelector('.exit');
+
+        // 立即登录按钮点击事件
+        but.addEventListener('click', function() {
+            shade.style.display = "block";
+            loginBox.style.display = "block";
+        });
+
+        // 关闭模态框事件
+        exit.addEventListener('click', function() {
+            shade.style.display = "none";
+            loginBox.style.display = "none";
+        });
+
+        // 拖动标题区域可移动模态框
+        title.addEventListener('mousedown', function(event) {
+            // 计算鼠标在登录框中坐标
+            let x = event.pageX - loginBox.offsetLeft;
+            let y = event.pageY - loginBox.offsetTop;
+            // 给页面添加鼠标移动事件
+            document.addEventListener('mousemove', loginBoxMove);
+            function loginBoxMove(event) {
+                loginBox.style.left = (event.pageX - x)+"px";
+                loginBox.style.top = (event.pageY - y)+"px";
+            }
+            // 鼠标松开后移除页面的鼠标移动事件
+            document.addEventListener('mouseup', function() {
+                document.removeEventListener('mousemove', loginBoxMove);
+            })
+        });
+
+
+
+
+
+
+
+       $(document).ready(function () {
+           $('#myModal').on('show.bs.modal', function (event) {
+               var button = $(event.relatedTarget);
+               var title = button.closest('tr').find('.title').text();
+               var answer = button.closest('tr').find('.answer').text();
+               var modal = $(this)
+               modal.find('.modal-title').text(title);
+               modal.find('.modal-body p').text(answer);
+           });
+       });
+        function my_confirm(){
+              window.history.back(-1);
+        }
+
+   </script>
+
+  </body>
+</html>

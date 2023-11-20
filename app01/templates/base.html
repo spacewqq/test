@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}base{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'plugings/bootstrap-5.3/css/bootstrap.min.css' %}">
+
+
+{#    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
+{#      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>#}
+{#    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="main/css" />#}
+{##}
+{#    <link href="{% static 'css/test.css' %}" rel="stylesheet" type="text/css" />#}
+
+
+
+
+   {% block css %}{% endblock %}
+
+
+</head>
+<body>
+{#<nav class="navbar navbar-expand-lg body-tertiary" style="background-color: " >#}
+<header>
+   <nav class="navbar navbar-expand-lg " style="background-color: grey " >
+    <div class="container-fluid">
+         <a class="navbar-brand" href="#" style="color: chartreuse;text-align: center" >
+            <img src="{% static 'img/logo4.png' %}" alt="Logo" width="38" height="32"
+                       class="d-inline-block align-text-top" >
+            深度练习
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/index">首页</a>
+                </li>
+
+            </ul>
+
+            <form class="d-flex" >
+                <ul class="navbar-nav me-auto mb-3 mb-lg-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/login">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="/user/register">注册</a>
+                </li>
+                </ul>
+             </form>
+
+        </div>
+    </div>
+</nav>
+
+
+
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+  <script src="{% static 'js/jquery.countdown.js' %}"></script>
+<script src="{% static 'js/jquery-3.6.3.min.js' %}"></script>
+<script src="{% static 'plugings/bootstrap-5.3/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
